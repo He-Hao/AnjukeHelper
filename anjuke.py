@@ -17,7 +17,7 @@ def get_html_text(url):
         response = requests.get(url, headers=headers)
         response.encoding = 'utf-8'  # 把编码改为utf-8
         return response.content
-    except:
+    except requests.HTTPError:
         return 'Error!'
 
 
@@ -94,6 +94,8 @@ def parse_second_hand_house_html(html):
 
 # 检验是否需要验证码
 def need_identifying_code(html):
+    # 待开发，校验title或其他关键信息
+    print(html)
     if 1 == 1:
         return False
     return True
@@ -102,6 +104,8 @@ def need_identifying_code(html):
 # 识别验证码
 def detection_identifying_code(img):
     im = Image.open(img)
+    print(im)
+    # 待开发，可使用Tesseract-OCR=>image2text
     return 1234
 
 
@@ -112,9 +116,7 @@ def main():
     while i <= dep:
         second_hand_house_list = get_second_hand_house_list(i)
         for j in second_hand_house_list:
-            # 判断是否已经保存
-            if 1 == 1:
-                save_second_hand_house(j)
+            save_second_hand_house(j)
         print(i)
         time.sleep(2)
         i += 1
@@ -122,20 +124,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    # file = open('a.txt', 'r', encoding= 'utf-8')
-    # f = file.read()
-    # # print(f)
-    # soup = BeautifulSoup(f, 'html.parser')
-    # tags = []
-    # tmp_tags = soup.find('div', class_='item-img').img['src']
-    # print(tmp_tags)
-
-    # house_href = 'https://cs.anjuke.com/prop/view/A1099653615?from=filter&spread=commsearch_p&position=113&kwtype=filter&now_time=1517304360'
-    # r = r'com/prop/view/(.*?)\?'
-    # house_code = re.findall(r, house_href)[0]
-    # print(house_code)
-
-    # a = exists_second_hand_house('A1075777191')
-    # if not a:
-    #     print(a)
